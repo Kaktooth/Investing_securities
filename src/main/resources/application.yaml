@@ -1,0 +1,32 @@
+spring:
+  application:
+    name: secutities
+
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:postgresql://localhost:5432/investing_securities
+    username: postgres
+    password: vetal54
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 50
+
+  flyway:
+    enabled: true
+    validate-on-migrate: true
+
+  mvc:
+    view:
+      prefix: /
+      suffix: .jsp
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
+server:
+  error:
+    include-message: always
+    include-exception: true
+  port: 8081
+
+application:
+  pagination-feature: true
