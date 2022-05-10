@@ -14,6 +14,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "securities")
 public class Securities extends Domain {
+    String ISIN;
     int minAmountTransaction;
     int rating;
     int profitabilityForLastYear;

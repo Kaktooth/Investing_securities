@@ -11,5 +11,6 @@ public class WebConfig implements WebMvcConfigurer {
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addRedirectViewController("/", "/dashboard");
         registry.addViewController("/dashboard/**").setViewName("dashboard");
+
     }
 }

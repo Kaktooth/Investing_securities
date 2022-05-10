@@ -18,7 +18,6 @@ public class Customer extends Domain{
     String name;
     String typeOfProperty;
     String address;
-    @JoinColumn(name = "phoneNumber")
     String phoneNumber;
 
     @Override
