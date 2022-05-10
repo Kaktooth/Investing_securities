@@ -10,4 +10,5 @@ public class CustomerService extends AbstractService<Customer, CustomerRepositor
     public CustomerService(CustomerRepository repository) {
         super(repository);
     }
+
 }

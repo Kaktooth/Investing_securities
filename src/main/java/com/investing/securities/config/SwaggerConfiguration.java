@@ -1,4 +1,4 @@
-package com.investing.securities.configuration;
+package com.investing.securities.config;
 
 import org.springframework.context.annotation.Bean;
 import springfox.documentation.builders.PathSelectors;
@@ -7,7 +7,7 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 
 @org.springframework.context.annotation.Configuration
-public class Configuration {
+public class SwaggerConfiguration {
 
     @Bean
     public Docket api() {

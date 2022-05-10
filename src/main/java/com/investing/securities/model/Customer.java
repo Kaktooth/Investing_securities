@@ -5,6 +5,7 @@ import lombok.experimental.FieldDefaults;
 import org.hibernate.Hibernate;
 
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 import java.util.Objects;
 
@@ -17,6 +18,7 @@ public class Customer extends Domain{
     String name;
     String typeOfProperty;
     String address;
+    @JoinColumn(name = "phoneNumber")
     String phoneNumber;
 
     @Override
