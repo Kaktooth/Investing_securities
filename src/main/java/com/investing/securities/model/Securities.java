@@ -5,20 +5,15 @@ import lombok.experimental.FieldDefaults;
 import org.hibernate.Hibernate;
 
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.Table;
 import java.util.Objects;
-import java.util.UUID;
 
 @Getter
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
-@Table(name = "securitie")
-public class Securities {
-
-    @Id
-    UUID id;
+@Table(name = "securities")
+public class Securities extends Domain {
     int minAmountTransaction;
     int rating;
     int profitabilityForLastYear;
@@ -29,7 +24,7 @@ public class Securities {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
         Securities that = (Securities) o;
-        return id != null && Objects.equals(id, that.id);
+        return getId() != null && Objects.equals(getId(), that.getId());
     }
 
     @Override

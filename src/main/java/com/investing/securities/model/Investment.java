@@ -1,11 +1,12 @@
 package com.investing.securities.model;
 
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.Hibernate;
 
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.Table;
 import java.math.BigInteger;
 import java.time.LocalDateTime;
@@ -17,10 +18,7 @@ import java.util.UUID;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @Table(name = "investment")
-public class Investment {
-
-    @Id
-    UUID id;
+public class Investment extends Domain {
     BigInteger financialQuotation;
     LocalDateTime dateOfPurchase;
     LocalDateTime dateOfSale;
@@ -32,7 +30,7 @@ public class Investment {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
         Investment that = (Investment) o;
-        return id != null && Objects.equals(id, that.id);
+        return getId() != null && Objects.equals(getId(), that.getId());
     }
 
     @Override
