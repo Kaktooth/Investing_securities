@@ -1,8 +1,8 @@
 CREATE TABLE securities
 (
-    id                       UUID PRIMARY KEY,
-    minAmountTransaction     INTEGER,
-    rating                   INTEGER,
-    profitabilityForLastYear INTEGER,
-    additionalInfo           VARCHAR(255)
+    id                          UUID PRIMARY KEY,
+    min_amount_transaction      INTEGER,
+    rating                      INTEGER,
+    profitability_for_last_year INTEGER,
+    additional_info             VARCHAR(255)
 );
