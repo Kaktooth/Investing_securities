@@ -7,9 +7,8 @@ import com.investing.securities.repository.CustomerRepository;
 import com.investing.securities.repository.InvestmentRepository;
 import com.investing.securities.repository.SecuritiesRepository;
 import com.investing.securities.service.AbstractService;
+import com.investing.securities.service.CustomerService;
 import com.investing.securities.service.InvestmentService;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -18,8 +17,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Controller
@@ -41,47 +42,55 @@ public class DashboardController {
 
 
     @GetMapping
-    public ResponseEntity<String> getDashboardModel(Model model) {
-        model.addAttribute("customers", customerService.findAll());
-        model.addAttribute("securities", securitiesService.findAll());
-        model.addAttribute("investments", new ArrayList<>());
-        return ResponseEntity.status(HttpStatus.OK)
-            .body(String.format("Page loaded: %s", "dashboard"));
+    public String getDashboardModel(
+        @RequestParam(value = "searchString", required = false) String searchString,
+        Model model) {
+        System.out.println(searchString);
+        List<Customer> searchCustomers = new ArrayList<>();
+        if (searchString!=null) {
+            searchCustomers = ((CustomerService) customerService).searchCustomers(searchString, 4);
+            System.out.println(searchCustomers);
+            model.addAttribute("searchCustomers", searchCustomers);
+        }
+
+        model.addAttribute("securitiesList", securitiesService.findAll());
+        model.addAttribute("investmentsList", new ArrayList<>());
+        model.addAttribute("customer", new Customer());
+        model.addAttribute("securities", new Securities());
+        model.addAttribute("investment", new Investment());
+
+        return "dashboard";
     }
 
     @GetMapping("/client/{id}")
-    public ResponseEntity<String> getCustomerInvestments(@PathVariable String id,
-                                                         Model model) {
+    public String getCustomerInvestments(@PathVariable String id,
+                                         Model model) {
         model.addAttribute("investments",
             ((InvestmentService) investmentService).findAllById(UUID.fromString(id)));
-        return ResponseEntity.status(HttpStatus.OK)
-            .body(String.format("Page loaded: %s", "dashboard"));
+        return "dashboard";
     }
 
     @PostMapping("/create-customer")
-    public ResponseEntity<String> createCustomer(
+    public String createCustomer(
         @ModelAttribute Customer customer,
         BindingResult bindingResult) {
         customerService.save(customer);
-        return ResponseEntity.status(HttpStatus.OK)
-            .body(String.format("Customer created: %s", "dashboard"));
+        return "redirect:/dashboard";
     }
 
     @PostMapping("/create-securities")
-    public ResponseEntity<String> createSecurities(
+    public String createSecurities(
         @ModelAttribute Securities securities,
         BindingResult bindingResult) {
         securitiesService.save(securities);
-        return ResponseEntity.status(HttpStatus.OK)
-            .body(String.format("Securities created: %s", "dashboard"));
+        return "dashboard";
     }
 
     @PostMapping("/invest")
-    public ResponseEntity<String> investSecurities(
+    public String investSecurities(
         @ModelAttribute Investment investment,
         BindingResult bindingResult) {
         investmentService.save(investment);
-        return ResponseEntity.status(HttpStatus.OK)
-            .body(String.format("Invest securities: %s", "dashboard"));
+        return "dashboard";
     }
 }
