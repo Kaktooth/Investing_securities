@@ -3,6 +3,7 @@ package com.investing.securities.model;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.Hibernate;
 
@@ -17,6 +18,7 @@ import java.util.UUID;
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
+@ToString
 @Table(name = "investment")
 public class Investment extends Domain {
     BigInteger financialQuotation;
