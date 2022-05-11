@@ -4,7 +4,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.css">
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"></script>
-    <link type="text/css" href="css/dashboard.css" rel="stylesheet" />
+    <link type="text/css" href="css/dashboard.css" rel="stylesheet"/>
     <meta charset="UTF-8">
     <title>Investing securities</title>
 </head>
@@ -13,16 +13,65 @@
     Investing securities
 </h2>
 
-<form class="form-inline">
-    <div class="row input-group">
-        <input class="search form-control" maxlength="13" placeholder='Search'/>
-        <button type="button" class="buttonAddCustomer btn btn-success" data-toggle="modal" data-target="#addCustomer">
-                Add Customer
-        </button>
-        <button type="button" class="buttonInvest btn btn-primary" data-toggle="modal" data-target="#investSecurities">Invest</button>
-    </div>
-</form>
 
+<div class="row input-group">
+    <form class="form-inline" method="get" th:href="@{/dashboard}">
+        <input type="search" class="search form-control" maxlength="13" name="searchString" id="searchString"
+               placeholder='Search'/>
+    </form>
+    <button type="button" class="buttonAddCustomer btn btn-success" data-toggle="modal" data-target="#addCustomer">
+        Add Customer
+    </button>
+    <button type="button" class="buttonInvest btn btn-primary" data-toggle="modal" data-target="#investSecurities">
+        Invest
+    </button>
+</div>
+<div class="dropdown" th:if="${searchCustomers != null}">
+    <div class="dropdown-menu bg-dark-2 show" id="drop" th:name="drop" aria-labelledby="dropdownMenuButton"
+         th:if="${searchCustomers.size()} > 0"
+         style="position: static; margin: 0px;">
+
+        <a th:each="customer, i : ${searchCustomers}" th:href="@{/client/{id}(id =${customer.id})}">
+            <div class="dropdown-item bg-dark-2 card" style="width:235px; height: 100px;">
+                <div class="row no-gutters">
+                    <div>
+                        <div class="text-center">
+                            <small>
+                                <label class="card-title"
+                                       th:text="${customer.name}">
+                                </label>
+                            </small>
+                            <p class="card-text">
+                                <small
+                                        th:text="${customer.typeOfProperty} + ' property'">
+                                </small>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </a>
+        <button class="btn-sm btn-secondary float-right" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+                aria-expanded="false">
+            Close
+        </button>
+    </div>
+    <div class="dropdown-menu show" id="drop2" th:name="drop2" aria-labelledby="dropdownMenuButton2"
+         th:if="${searchCustomers.size()} == 0"
+         style="position: static; margin: 0px;">
+        <div class="dropdown-item bg-dark-2 card" style="width:235px; height: 100px;">
+                <div class="card-body text-center">
+                    <p class="card-text"
+                       th:text="'Nothing was found.'">
+                    </p>
+                </div>
+        </div>
+        <button class="btn-sm btn-secondary float-right" type="button" id="dropdownMenuButton2" data-toggle="dropdown"
+                aria-expanded="false">
+            Close
+        </button>
+    </div>
+</div>
 <label class="labelCustomer">Customer</label>
 
 <table class="tableMain">
@@ -82,9 +131,11 @@
                     <div class="form-group">
                         <h5>Create customer</h5>
                         <input th:field="*{name}" id="name" class="form-control mb-4" placeholder='name'/>
-                        <input th:field="*{typeOfProperty}" id="propertyType" class="form-control mb-4" placeholder='property type'/>
+                        <input th:field="*{typeOfProperty}" id="propertyType" class="form-control mb-4"
+                               placeholder='property type'/>
                         <input th:field="*{address}" id="address" class="form-control mb-4" placeholder='address'/>
-                        <input th:field="*{phoneNumber}" id="phoneNumber" class="form-control mb-4" placeholder='phone number'/>
+                        <input th:field="*{phoneNumber}" id="phoneNumber" class="form-control mb-4"
+                               placeholder='phone number'/>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -110,16 +161,24 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <h5>Invest</h5>
-                        <input th:field="*{financialQuotation}" type="number" id="financialQuotation" class="form-control mb-4"  placeholder='financial quotation'/>
-                        <input th:field="*{dateOfSale}" type="datetime-local" id="dateOfSale" class="form-control mb-4" placeholder='date of sale'/>
+                        <input th:field="*{financialQuotation}" type="number" id="financialQuotation"
+                               class="form-control mb-4" placeholder='financial quotation'/>
+                        <input th:field="*{dateOfSale}" type="datetime-local" id="dateOfSale" class="form-control mb-4"
+                               placeholder='date of sale'/>
 
                         <form class="form-inline">
                             <div class="row input-group">
-                                <input th:field="*{securitiesId}" type="text" id="securitiesId" class="form-control mb-4" placeholder=''/>
-                                <button type="button" class="buttonInvest btn btn-success mb-4" data-toggle="modal" data-target="#addSecurities">Add Securities</button>
+                                <select class="form-control mb-4" th:field="*{securitiesId}" name="securitiesId"
+                                        id="securitiesId">
+                                    <option th:each="securities: ${securitiesList}" th:value="${securities.id}"
+                                            th:text="${securities.ISIN} + ' ' + ${securities.additionalInfo}"></option>
+                                </select>
+                                <button type="button" class="buttonInvest btn btn-success mb-4" data-toggle="modal"
+                                        data-target="#addSecurities">Add Securities
+                                </button>
                             </div>
                         </form>
-                        <input th:field="*{customerId}" type="text" id="customerId" class="form-control mb-4" placeholder=''/>
+
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -145,11 +204,16 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <h5>Create securities</h5>
-                        <input th:field="*{ISIN}" type="text" id="ISIN" class="form-control mb-4" maxlength="12" placeholder='Enter ISIN'/>
-                        <input th:field="*{minAmountTransaction}" type="number" id="minAmountTransaction" class="form-control mb-4" placeholder='minimal amount transaction'/>
-                        <input th:field="*{profitabilityForLastYear}" type="number" id="profitabilityForLastYear" class="form-control mb-4" placeholder='last year profitability'/>
-                        <input th:field="*{rating}" type="number" id="rating" class="form-control mb-4" placeholder='rating'/>
-                        <textarea th:field="*{additionalInfo}" type="text" id="additionalInfo" style="word-wrap:break-word;" name="info"
+                        <input th:field="*{ISIN}" type="text" id="ISIN" class="form-control mb-4" maxlength="12"
+                               placeholder='Enter ISIN'/>
+                        <input th:field="*{minAmountTransaction}" type="number" id="minAmountTransaction"
+                               class="form-control mb-4" placeholder='minimal amount transaction'/>
+                        <input th:field="*{profitabilityForLastYear}" type="number" id="profitabilityForLastYear"
+                               class="form-control mb-4" placeholder='last year profitability'/>
+                        <input th:field="*{rating}" type="number" id="rating" class="form-control mb-4"
+                               placeholder='rating'/>
+                        <textarea th:field="*{additionalInfo}" type="text" id="additionalInfo"
+                                  style="word-wrap:break-word;" name="info"
                                   class="form-control text-muted mb-4" autofocus=""
                                   maxlength="440" minlength="1" required>
                                 </textarea>

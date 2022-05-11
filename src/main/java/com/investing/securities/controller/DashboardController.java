@@ -7,6 +7,7 @@ import com.investing.securities.repository.CustomerRepository;
 import com.investing.securities.repository.InvestmentRepository;
 import com.investing.securities.repository.SecuritiesRepository;
 import com.investing.securities.service.AbstractService;
+import com.investing.securities.service.CustomerService;
 import com.investing.securities.service.InvestmentService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,8 +17,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Controller
@@ -39,13 +42,23 @@ public class DashboardController {
 
 
     @GetMapping
-    public String getDashboardModel(Model model) {
-        model.addAttribute("customersList", customerService.findAll());
+    public String getDashboardModel(
+        @RequestParam(value = "searchString", required = false) String searchString,
+        Model model) {
+        System.out.println(searchString);
+        List<Customer> searchCustomers = new ArrayList<>();
+        if (searchString!=null) {
+            searchCustomers = ((CustomerService) customerService).searchCustomers(searchString, 4);
+            System.out.println(searchCustomers);
+            model.addAttribute("searchCustomers", searchCustomers);
+        }
+
         model.addAttribute("securitiesList", securitiesService.findAll());
         model.addAttribute("investmentsList", new ArrayList<>());
         model.addAttribute("customer", new Customer());
         model.addAttribute("securities", new Securities());
         model.addAttribute("investment", new Investment());
+
         return "dashboard";
     }
 
@@ -62,7 +75,7 @@ public class DashboardController {
         @ModelAttribute Customer customer,
         BindingResult bindingResult) {
         customerService.save(customer);
-        return "dashboard";
+        return "redirect:/dashboard";
     }
 
     @PostMapping("/create-securities")
