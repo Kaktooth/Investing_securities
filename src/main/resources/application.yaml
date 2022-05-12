@@ -16,12 +16,15 @@ spring:
     validate-on-migrate: true
 
   mvc:
+    format:
+      date: yyyy.MM.dd
+      date-time: yyyy.MM.dd HH:mm
+      time: HH:mm:ss
     view:
       prefix: /
       suffix: .jsp
     pathmatch:
       matching-strategy: ant_path_matcher
-
 server:
   error:
     include-message: always

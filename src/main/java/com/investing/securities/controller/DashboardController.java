@@ -20,9 +20,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.SessionCookieConfig;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -53,6 +54,7 @@ public class DashboardController {
     @GetMapping
     public String getDashboardModel(
         @RequestParam(value = "searchString", required = false) String searchString,
+        @RequestParam(value = "customerId", required = false) String customerId,
         RedirectAttributes attributes,
         Model model) {
         initObjects(model);
@@ -63,7 +65,6 @@ public class DashboardController {
         List<Securities> securities = securitiesService.findAll();
         model.addAttribute("securitiesList", securities);
         model.addAttribute("investmentsList", new ArrayList<>());
-        model.addAttribute("localDateTime", LocalDateTime.now());
 
         return "dashboard";
     }
@@ -77,12 +78,16 @@ public class DashboardController {
         attributes.addFlashAttribute("investment", new Investment());
         Customer currentCustomer = customerService.findById(UUID.fromString(customerId));
         attributes.addFlashAttribute("currentCustomer", currentCustomer);
+        attributes.addAttribute("currentCustomer", currentCustomer);
+        attributes.addFlashAttribute("customerId", customerId);
+        attributes.addAttribute("customerId", customerId);
         Map<Investment, Securities> investments = ((InvestmentService) investmentService).findAllById(
             UUID.fromString(customerId), securitiesService);
         attributes.addFlashAttribute("investments", investments);
         attributes.addFlashAttribute("localDateTime", LocalDateTime.now());
+        attributes.addFlashAttribute("date", new Date());
 
-        return "redirect:/dashboard";
+        return "redirect:/dashboard" + "?currentCustomer={currentCustomer}&customerId={customerId}";
     }
 
     @GetMapping("/customer-log-out")
@@ -101,30 +106,28 @@ public class DashboardController {
         return "redirect:/dashboard";
     }
 
-    @PostMapping("/create-securities/{id}")
+    @PostMapping("/create-securities")
     public String createSecurities(
-        @PathVariable String id,
         @ModelAttribute Securities securities,
         RedirectAttributes attributes,
         BindingResult bindingResult,
         Model model) {
         securitiesService.save(securities);
-        attributes.addFlashAttribute("currentCustomer",
-            customerService.findById(UUID.fromString(id)));
         return "redirect:/dashboard";
     }
 
-    @PostMapping("/invest/{id}")
+    @PostMapping("/invest/{customerId}")
     public String investSecurities(
-        @PathVariable String id,
+        @PathVariable String customerId,
         @ModelAttribute Investment investment,
+        @ModelAttribute Date date,
         RedirectAttributes attributes,
         BindingResult bindingResult,
         Model model) {
-        attributes.addFlashAttribute("currentCustomer",
-            customerService.findById(UUID.fromString(id)));
-        investment.setCustomerId(UUID.fromString(id));
+
         investment.setDateOfPurchase(LocalDateTime.now());
+        investment.setDateOfSale(LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault()));
+        investment.setCustomerId(UUID.fromString(customerId));
         System.out.println(investment);
         investmentService.save(investment);
         return "redirect:/dashboard";

@@ -118,14 +118,13 @@
         <div class="modal-content">
             <form th:action="@{/dashboard/create-customer}" method="post" th:object="${customer}">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modalTitle">Create securities</h5>
+                    <h5 class="modal-title" id="modalTitle">Create customer</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                        <h5>Create customer</h5>
                         <input th:field="*{name}" name="customer.name" id="name" class="form-control mb-4"
                                placeholder='name'/>
                         <input th:field="*{typeOfProperty}" name="customer.typeOfProperty" id="propertyType"
@@ -151,38 +150,32 @@
      aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <form th:action="@{/dashboard/invest}" method="post" th:object="${investment}">
+            <form th:action="@{/dashboard/invest/{customerId}(customerId =${currentCustomer.id.toString()})}"
+                  method="post" th:object="${investment}">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modalInvest">Create securities</h5>
+                    <h5 class="modal-title" id="modalInvest">Invest Securities</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                        <h5>Invest Securities</h5>
-                        <input th:field="*{financialQuotation}" type="number" id="financialQuotation"
+                        <input th:field="*{financialQuotation}"  type="number" step="any" id="financialQuotation"
                                class="form-control mb-4" placeholder='financial quotation'/>
                         <label for="dateOfSale">Date of sale</label>
-                        <input th:field="*{dateOfSale}" type="datetime-local" id="dateOfSale" class="form-control mb-4"
-                               placeholder='date of sale'/>
-                        <input th:field="*{dateOfPurchase}" type="datetime-local" id="dateOfPurchase"
-                               class="form-control mb-4"
-                               th:placeholder='${localDateTime}'/>
-                        <input th:field="*{customerId}" type="text" id="customerId" class="form-control mb-4"
-                               th:placeholder='${currentCustomer.id}'/>
-                        <form class="form-inline">
-                            <div class="row input-group">
-                                <select class="form-control mb-4" th:field="*{securitiesId}" name="securitiesId"
-                                        id="securitiesId">
-                                    <option th:each="securities: ${securitiesList}" th:value="${securities.id}"
-                                            th:text="${securities.ISIN} + ' ' + ${securities.additionalInfo}"></option>
-                                </select>
-                                <button type="button" class="buttonInvest btn btn-success mb-4" data-toggle="modal"
-                                        data-target="#addSecurities">Add Securities
-                                </button>
-                            </div>
-                        </form>
+                        <input type="date" id="dateOfSale" th:object="${date}"
+                               class="form-control mb-4"/>
+
+                        <div class="row input-group">
+                            <select class="form-control mb-4" th:field="*{securitiesId}" name="securitiesId"
+                                    id="securitiesId">
+                                <option th:each="securities: ${securitiesList}" th:value="${securities.id}"
+                                        th:text="${securities.ISIN} + ' ' + ${securities.additionalInfo}"></option>
+                            </select>
+                            <button type="button" class="buttonInvest btn btn-success mb-4" data-toggle="modal"
+                                    data-target="#addSecurities">Add Securities
+                            </button>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -193,7 +186,7 @@
         </div>
     </div>
 </div>
-<div class="modal fade"
+<div th:if="${currentCustomer != null}" class="modal fade"
      id="addSecurities" tabindex="-1" role="dialog" aria-labelledby="Add securities"
      aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -208,7 +201,8 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                        <h5>Create securities</h5>
+                        <input type="hidden" id="id" class="form-control mb-4"
+                               th:placeholder='${currentCustomer.id}'/>
                         <input th:field="*{ISIN}" type="text" id="ISIN" class="form-control mb-4" maxlength="12"
                                placeholder='Enter ISIN'/>
                         <label for="minAmountTransaction">Min amount of transaction</label>
