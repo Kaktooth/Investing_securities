@@ -23,6 +23,7 @@ public class InvestmentService extends AbstractService<Investment, InvestmentRep
     public List<Investment> findAllById(UUID id) {
         return repository.findAllById(Collections.singleton(id));
     }
+
     public Map<Investment, Securities> findAllById(
         UUID id, AbstractService<Securities, SecuritiesRepository> service){
         List<Investment> investments = findAllById(id);
@@ -30,6 +31,7 @@ public class InvestmentService extends AbstractService<Investment, InvestmentRep
         for (var investment : investments) {
             investmentsMap.put(investment, service.findById(investment.getSecuritiesId()));
         }
+
         return investmentsMap;
     }
 }

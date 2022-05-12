@@ -13,7 +13,7 @@
     Investing securities
 </h2>
 
-<div class="row input-group">
+<div class="row input-group mb-2">
     <form class="form-inline" method="get" th:href="@{/dashboard}">
         <input type="search" class="search form-control" maxlength="13" name="searchString" id="searchString"
                placeholder='Search'/>
@@ -77,36 +77,32 @@
         </button>
     </div>
 </div>
-<div th:if="${currentCustomer!=null}">
+<div th:if="${currentCustomer!=null}" class="mb-2">
     <label class="labelCustomer" th:text="${currentCustomer.name}"></label>
     <label class="labelCustomer font-weight-light"
            th:text="'property: ' + ${currentCustomer.typeOfProperty}"></label>
     <label class="labelCustomer font-weight-light" th:text="'address: ' + ${currentCustomer.address}"></label>
     <label class="labelCustomer font-weight-light"
-           th:text="'phone number: ' +${currentCustomer.phoneNumber}"></label>
+           th:text="'phone number: +' +${currentCustomer.phoneNumber}"></label>
 </div>
 
-<table th:if="${currentCustomer != null}" class="tableCustomer">
+<table th:if="${currentCustomer == null}" class="tableCustomer">
     <thead>
     <tr>
+        <th scope="col">Name</th>
         <th scope="col">Type of property</th>
         <th scope="col">Address</th>
         <th scope="col">Phone</th>
     </tr>
     </thead>
     <tbody>
-    <tr th:each="investment : ${investments.entrySet()}">
-        <th scope="row" th:text="${investment.getValue().ISID}"></th>
-        <td th:text="${investment.getValue()}"></td>
-        <td>9</td>
+    <tr th:each="customer : ${customersList}">
+        <th scope="row" th:text="${customer.name}"></th>
+        <td th:text="${customer.typeOfProperty}"></td>
+        <td th:text="${customer.address}"></td>
+        <td th:text="${customer.phoneNumber}"></td>
     </tr>
     </tbody>
-    <tfoot>
-    <tr>
-        <th scope="row" colspan="2">Total albums</th>
-        <td colspan="2">77</td>
-    </tr>
-    </tfoot>
 </table>
 
 <table th:if="${currentCustomer != null}" class="tableInvestments">
@@ -127,12 +123,6 @@
         <td>----</td>
     </tr>
     </tbody>
-    <tfoot>
-    <tr>
-        <th scope="row" colspan="2">Total albums</th>
-        <td colspan="2">77</td>
-    </tr>
-    </tfoot>
 </table>
 </body>
 <div th:if="${currentCustomer == null}" class="modal fade"

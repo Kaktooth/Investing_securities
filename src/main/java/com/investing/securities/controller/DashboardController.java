@@ -64,6 +64,7 @@ public class DashboardController {
         }
         List<Securities> securities = securitiesService.findAll();
         model.addAttribute("securitiesList", securities);
+        model.addAttribute("customersList", customerService.findAll());
         model.addAttribute("investmentsList", new ArrayList<>());
 
         return "dashboard";
@@ -83,6 +84,7 @@ public class DashboardController {
         attributes.addAttribute("customerId", customerId);
         Map<Investment, Securities> investments = ((InvestmentService) investmentService).findAllById(
             UUID.fromString(customerId), securitiesService);
+        System.out.println(investments.toString());
         attributes.addFlashAttribute("investments", investments);
         attributes.addFlashAttribute("localDateTime", LocalDateTime.now());
         attributes.addFlashAttribute("date", new Date());
