@@ -85,8 +85,8 @@ public class DashboardController {
         Map<Investment, Securities> investments = ((InvestmentService) investmentService).findAllById(
             UUID.fromString(customerId), securitiesService);
         System.out.println(investments.toString());
+
         attributes.addFlashAttribute("investments", investments);
-        attributes.addFlashAttribute("localDateTime", LocalDateTime.now());
         attributes.addFlashAttribute("date", new Date());
 
         return "redirect:/dashboard" + "?currentCustomer={currentCustomer}&customerId={customerId}";
@@ -126,7 +126,7 @@ public class DashboardController {
         RedirectAttributes attributes,
         BindingResult bindingResult,
         Model model) {
-
+        System.out.println(date);
         investment.setDateOfPurchase(LocalDateTime.now());
         investment.setDateOfSale(LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault()));
         investment.setCustomerId(UUID.fromString(customerId));

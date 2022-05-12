@@ -21,7 +21,7 @@ public class InvestmentService extends AbstractService<Investment, InvestmentRep
     }
 
     public List<Investment> findAllById(UUID id) {
-        return repository.findAllById(Collections.singleton(id));
+        return repository.findAllByCustomerId(id);
     }
 
     public Map<Investment, Securities> findAllById(

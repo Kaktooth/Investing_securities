@@ -13,7 +13,7 @@
     Investing securities
 </h2>
 
-<div class="row input-group mb-2">
+<div class="row input-group">
     <form class="form-inline" method="get" th:href="@{/dashboard}">
         <input type="search" class="search form-control" maxlength="13" name="searchString" id="searchString"
                placeholder='Search'/>
@@ -32,7 +32,7 @@
         </button>
     </a>
 </div>
-<div class="dropdown" th:if="${searchCustomers != null}">
+<div class="dropdown mb-2" th:if="${searchCustomers != null}">
     <div class="dropdown-menu bg-dark-2 show" id="drop" th:name="drop" aria-labelledby="dropdownMenuButton"
          th:if="${searchCustomers.size()} > 0"
          style="position: static; margin: 0px;">
@@ -112,15 +112,15 @@
         <th scope="col">ISID</th>
         <th scope="col">Quotation</th>
         <th scope="col">Date of purchase</th>
-        <th scope="col">Date of sale</th>
+        <th scope="col">Profitability</th>
     </tr>
     </thead>
     <tbody>
     <tr th:each="investment : ${investments.entrySet()}">
-        <th scope="row" th:text="${investment.getValue().ISID}"></th>
-        <td th:text="${investment.getValue()}"></td>
-        <td>9</td>
-        <td>----</td>
+        <th scope="row" th:text="${investment.getValue().getISIN()}"></th>
+        <td th:text="${investment.getKey().getFinancialQuotation()}"></td>
+        <td th:text="${{investment.getKey().getDateOfPurchase()}}"></td>
+        <td th:text="${investment.getValue().getProfitabilityForLastYear()}"></td>
     </tr>
     </tbody>
 </table>
@@ -174,7 +174,7 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                        <input th:field="*{financialQuotation}"  type="number" step="any" id="financialQuotation"
+                        <input th:field="*{financialQuotation}" type="number" step="any" id="financialQuotation"
                                class="form-control mb-4" placeholder='financial quotation'/>
                         <label for="dateOfSale">Date of sale</label>
                         <input type="date" id="dateOfSale" th:object="${date}"
