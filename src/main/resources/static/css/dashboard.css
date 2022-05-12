@@ -16,7 +16,7 @@
  background: #0b0711;
 }
 
-.tableMain {
+.tableInvestments {
    table-layout: fixed;
    width: 100%;
    border-collapse: collapse;
@@ -24,7 +24,7 @@
    color: white;
  }
  thead th:nth-child(1) {
-   width: 30%;
+   width: 10%;
  }
 
  thead th:nth-child(2) {
@@ -32,16 +32,35 @@
  }
 
  thead th:nth-child(3) {
-   width: 15%;
+   width: 20%;
  }
 
  thead th:nth-child(4) {
-   width: 35%;
+   width: 20%;
  }
 
  th, td {
    padding: 20px;
  }
+
+ .tableCustomer {
+    table-layout: fixed;
+    width: 100%;
+    border-collapse: collapse;
+    border: 3px solid purple;
+    color: white;
+  }
+  thead th:nth-child(1) {
+     width: 45%;
+   }
+
+   thead th:nth-child(2) {
+     width: 30%;
+   }
+
+   thead th:nth-child(3) {
+     width: 25%;
+   }
 
  .copyright {
   text-align: center;
@@ -55,14 +74,14 @@
  }
 
  .buttonAddCustomer{
-  hight: 10px;
+  hight: 16%;
   margin-left: 10px;
   font-size: 14px;
   font-weight: bold;
  }
 
  .row{
-  hight: 10px;
+  hight: 16px;
   margin-left: 0px;
  }
 
@@ -73,7 +92,7 @@
    margin-top: 10px;
  }
  .buttonInvest{
-   hight: 10px;
+   hight: 16%;
    margin-left: 15px;
    font-size: 14px;
    font-weight: bold;

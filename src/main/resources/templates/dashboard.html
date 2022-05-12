@@ -85,14 +85,13 @@
     <label class="labelCustomer font-weight-light"
            th:text="'phone number: ' +${currentCustomer.phoneNumber}"></label>
 </div>
-<table th:if="${currentCustomer != null}" class="tableMain">
-    <caption class="copyright">Made by Roman Barmutov, Vitalii Dubovyk, Vova Bezridniy</caption>
+
+<table th:if="${currentCustomer != null}" class="tableCustomer">
     <thead>
     <tr>
-        <th scope="col">ISID</th>
-        <th scope="col">Quotation</th>
+        <th scope="col">Type of property</th>
+        <th scope="col">Address</th>
         <th scope="col">Phone</th>
-        <th scope="col">Most famous song</th>
     </tr>
     </thead>
     <tbody>
@@ -100,7 +99,32 @@
         <th scope="row" th:text="${investment.getValue().ISID}"></th>
         <td th:text="${investment.getValue()}"></td>
         <td>9</td>
-        <td>Ever fallen in love (with someone you shouldn't've)</td>
+    </tr>
+    </tbody>
+    <tfoot>
+    <tr>
+        <th scope="row" colspan="2">Total albums</th>
+        <td colspan="2">77</td>
+    </tr>
+    </tfoot>
+</table>
+
+<table th:if="${currentCustomer != null}" class="tableInvestments">
+    <caption class="copyright">Made by Roman Barmutov, Vitalii Dubovyk, Vova Bezridniy</caption>
+    <thead>
+    <tr>
+        <th scope="col">ISID</th>
+        <th scope="col">Quotation</th>
+        <th scope="col">Date of purchase</th>
+        <th scope="col">Date of sale</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="investment : ${investments.entrySet()}">
+        <th scope="row" th:text="${investment.getValue().ISID}"></th>
+        <td th:text="${investment.getValue()}"></td>
+        <td>9</td>
+        <td>----</td>
     </tr>
     </tbody>
     <tfoot>
